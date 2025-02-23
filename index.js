@@ -7,6 +7,8 @@ import JWTauth from "./src/middleware/JWTauth.js";
 import todoRouter from "./src/features/todos/todos.routes.js";
 import cors from "cors";
 import notesRouter from "./src/features/notes/notes.routes.js";
+import weatherRouter from "./src/features/weather/weather.routes.js";
+import weatherLimiter from "./src/features/weather/weather.rate.limiter.js";
 dotenv.config();
 
 const app = express();
@@ -19,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/users", userRouter);
 app.use("/api/todos", JWTauth, todoRouter);
 app.use("/api/notes", JWTauth, notesRouter);
+app.use("/api/weather", JWTauth, weatherLimiter, weatherRouter);
 app.use(errorMiddleware);
 
 export default app;
