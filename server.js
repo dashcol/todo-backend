@@ -1,11 +1,7 @@
 import app from "./index.js";
 import connectToDB from "./src/config/config.js";
-import awsServerlessExpress from "aws-serverless-express";
 
-connectToDB();
-
-const server = awsServerlessExpress.createServer(app);
-
-export const handler = (event, context) => {
-  return awsServerlessExpress.proxy(server, event, context);
-};
+app.listen(3000, () => {
+  connectToDB();
+  console.log("server at 3000");
+});
