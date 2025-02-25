@@ -18,7 +18,7 @@ export default class UserController {
         throw new ApplicationError("User already exists", 409);
       }
       await this.repository.SignUP(data);
-      res.status(201).send("sucess,welcome");
+      res.status(201).json({ message: "success, welcome" });
     } catch (error) {
       next(error);
     }
