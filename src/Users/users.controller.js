@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import ApplicationError from "../errors/errors.js";
 import { comparePassword } from "../utils/comparePassword.js";
 import UserRepository from "./users.repository.js";
+import { sendEmail } from "../utils/email.js";
 
 export default class UserController {
   constructor() {
@@ -12,6 +13,7 @@ export default class UserController {
     try {
       const data = req.body;
       const existingUser = await this.repository.existingUser(data);
+      await sendEmail(data);
       if (existingUser) {
         throw new ApplicationError("User already exists", 409);
       }
