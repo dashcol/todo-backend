@@ -1,6 +1,8 @@
 import nodemailer from "nodemailer";
 
 export const sendEmail = async (data) => {
+  console.log("in sendmail");
+
   try {
     const transporter = nodemailer.createTransport({
       service: process.env.JWT_EMAIL_SERVICE,
@@ -36,6 +38,7 @@ export const sendEmail = async (data) => {
     };
 
     await transporter.sendMail(mailOptions);
+    console.log("out of send mail");
   } catch (error) {
     console.log(error);
   }
