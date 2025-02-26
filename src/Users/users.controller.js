@@ -3,6 +3,7 @@ import ApplicationError from "../errors/errors.js";
 import { comparePassword } from "../utils/comparePassword.js";
 import UserRepository from "./users.repository.js";
 import { sendEmail } from "../utils/email.js";
+import { sendOTPEmail } from "../utils/otp.js";
 
 export default class UserController {
   constructor() {
@@ -27,7 +28,6 @@ export default class UserController {
     try {
       const data = req.body;
       const user = await this.repository.existingUser(data);
-      
 
       if (!user) {
         throw new ApplicationError("Please sign up", 400);
@@ -50,6 +50,25 @@ export default class UserController {
       res
         .status(200)
         .json({ message: `sucess! Hey ${user.name}`, token: token });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async handleOTP(req, res, next) {
+    try {
+      const { email, otp } = req.body;
+
+      if (!email) {
+        throw new ApplicationError("Email is required", 400);
+      }
+      const result = await this.repository.handleOTP(email, otp);
+      if (result.type === "store") {
+        await sendOTPEmail(email, result.otp);
+        res.status(200).json({ message: "OTP sent to your email" });
+      } else {
+        res.status(200).json(result);
+      }
     } catch (error) {
       next(error);
     }
