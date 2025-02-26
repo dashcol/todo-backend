@@ -9,8 +9,9 @@ export default class TodoController {
   async AddTodo(req, res, next) {
     try {
       const { todo } = req.body;
+      const userId = req.user.id;
 
-      const added = await this.repository.AddTodo(todo);
+      const added = await this.repository.AddTodo(todo, userId);
       if (!added) {
         throw new ApplicationError("not added", 400);
       }
@@ -20,8 +21,9 @@ export default class TodoController {
     }
   }
   async todoList(req, res, next) {
+    const userId = req.user.id;
     try {
-      const todos = await this.repository.todoList();
+      const todos = await this.repository.todoList(userId);
       if (!todos) {
         throw new ApplicationError("no todos add todos", 400);
       }
@@ -34,8 +36,8 @@ export default class TodoController {
   async toggleTodo(req, res, next) {
     try {
       const { id } = req.params;
-
-      const todo = await this.repository.toggleTodo(id);
+      const userId = req.user.id;
+      const todo = await this.repository.toggleTodo(id, userId);
       if (!todo) {
         throw new ApplicationError("no todo", 400);
       }
@@ -49,8 +51,8 @@ export default class TodoController {
   async deletetodo(req, res, next) {
     try {
       const { id } = req.params;
-
-      const todo = await this.repository.deleteTodo(id);
+      const userId = req.user.id;
+      const todo = await this.repository.deleteTodo(id, userId);
       if (!todo) {
         throw new ApplicationError("not deleted Error", 400);
       }

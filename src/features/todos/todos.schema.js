@@ -9,9 +9,10 @@ const todoSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  userName: {
-    type: String,
-    default:"Admin"
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
   },
   createdOn: {
     type: Date,

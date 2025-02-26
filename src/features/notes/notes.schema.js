@@ -5,9 +5,10 @@ const notesSchmea = new mongoose.Schema({
     type: String,
     required: [true, "Please enter your notes"],
   },
-  userName: {
-    type: String,
-    default: "Admin",
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
   },
   createdOn: {
     type: Date,

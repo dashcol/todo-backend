@@ -14,6 +14,7 @@ const JWTauth = (req, res, next) => {
         return res.status(403).json({ message: "invalid token" });
       }
       req.user = user;
+
       next();
     }
   );

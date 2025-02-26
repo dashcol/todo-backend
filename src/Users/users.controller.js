@@ -27,6 +27,8 @@ export default class UserController {
     try {
       const data = req.body;
       const user = await this.repository.existingUser(data);
+      
+
       if (!user) {
         throw new ApplicationError("Please sign up", 400);
       }
@@ -38,6 +40,7 @@ export default class UserController {
       }
       const token = jwt.sign(
         {
+          id: user._id,
           name: user.name,
           email: user.email,
         },

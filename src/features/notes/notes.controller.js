@@ -8,7 +8,8 @@ export default class NotesController {
   async addNotes(req, res, next) {
     try {
       const { notes } = req.body;
-      const added = await this.repository.addNotes(notes);
+      const userId = req.user.id;
+      const added = await this.repository.addNotes(notes, userId);
       if (!added) {
         throw new ApplicationError("not added", 400);
       }
@@ -19,7 +20,8 @@ export default class NotesController {
   }
   async notesList(req, res, next) {
     try {
-      const notes = await this.repository.notesList();
+      const userId = req.user.id;
+      const notes = await this.repository.notesList(userId);
       if (!notes) {
         throw new ApplicationError("no notes add notes", 400);
       }
@@ -31,8 +33,8 @@ export default class NotesController {
   async deleteNotes(req, res, next) {
     try {
       const { id } = req.params;
-
-      const notes = await this.repository.deleteNotes(id);
+      const userId = req.user.id;
+      const notes = await this.repository.deleteNotes(id, userId);
       if (!notes) {
         throw new ApplicationError("not deleted Error", 400);
       }

@@ -30,12 +30,12 @@ const userSchema = new mongoose.Schema({
   mobile: {
     type: String,
     required: [true, "enter your mobile number"],
-    unique: true,
     match: [/^\d{10}$/, "Please enter a valid 10-digit mobile number"],
   },
   gender: {
     type: String,
     required: [true, "provide your gender"],
+    unique: true,
     enum: ["male", "female"],
   },
   signedUpOn: {
