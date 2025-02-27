@@ -2,9 +2,14 @@ import ApplicationError from "../../errors/errors.js";
 
 export default class weatherController {
   async weather(req, res, next) {
-    const { city } = req.query;
-    console.log(city);
+    let { city } = req.query;
 
+    city = city
+      .trim()
+      .toLowerCase()
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
     try {
       const response = await fetch(
         `https://api.weatherapi.com/v1/current.json?key=${
