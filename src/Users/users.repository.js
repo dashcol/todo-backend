@@ -45,4 +45,11 @@ export default class UserRepository {
       };
     }
   }
+  async changePass(email, hashedPassword) {
+    return await userModel.findOneAndUpdate(
+      { email },
+      { password: hashedPassword },
+      { new: true }
+    );
+  }
 }

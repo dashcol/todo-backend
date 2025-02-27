@@ -4,7 +4,7 @@ import { comparePassword } from "../utils/comparePassword.js";
 import UserRepository from "./users.repository.js";
 import { sendEmail } from "../utils/email.js";
 import { sendOTPEmail } from "../utils/otp.js";
-
+import bcrypt from "bcrypt";
 export default class UserController {
   constructor() {
     this.repository = new UserRepository();
@@ -69,6 +69,23 @@ export default class UserController {
       } else {
         res.status(200).json(result);
       }
+    } catch (error) {
+      next(error);
+    }
+  }
+  async changePass(req, res, next) {
+    try {
+      const { email, newPassword } = req.body;
+
+      if (!email || !newPassword) {
+        throw new ApplicationError("Email and new password are required", 400);
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+      await this.repository.changePass(email, hashedPassword);
+
+      res.status(200).json({ message: "Password changed successfully" });
     } catch (error) {
       next(error);
     }
